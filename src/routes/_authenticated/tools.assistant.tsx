@@ -32,7 +32,7 @@ function AssistantPage() {
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
-      headers: () => (token ? { Authorization: `Bearer ${token}` } : {}),
+      headers: () => ({ Authorization: token ? `Bearer ${token}` : "" }),
     }),
   });
 

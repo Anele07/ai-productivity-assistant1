@@ -12,8 +12,20 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResponsibleAiRouteImport } from './routes/responsible-ai'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedLibraryRouteImport } from './routes/_authenticated/library'
+import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedAnalyticsRouteImport } from './routes/_authenticated/analytics'
+import { Route as AuthenticatedToolsResearchRouteImport } from './routes/_authenticated/tools.research'
+import { Route as AuthenticatedToolsPlannerRouteImport } from './routes/_authenticated/tools.planner'
+import { Route as AuthenticatedToolsMeetingRouteImport } from './routes/_authenticated/tools.meeting'
+import { Route as AuthenticatedToolsEmailRouteImport } from './routes/_authenticated/tools.email'
+import { Route as AuthenticatedToolsAssistantRouteImport } from './routes/_authenticated/tools.assistant'
+import { Route as AuthenticatedHistoryIdRouteImport } from './routes/_authenticated/history.$id'
 
 const ResponsibleAiRoute = ResponsibleAiRouteImport.update({
   id: '/responsible-ai',
@@ -30,6 +42,10 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -40,45 +56,183 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedLibraryRoute = AuthenticatedLibraryRouteImport.update({
+  id: '/library',
+  path: '/library',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedHistoryRoute = AuthenticatedHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedAnalyticsRoute = AuthenticatedAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedToolsResearchRoute =
+  AuthenticatedToolsResearchRouteImport.update({
+    id: '/tools/research',
+    path: '/tools/research',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedToolsPlannerRoute =
+  AuthenticatedToolsPlannerRouteImport.update({
+    id: '/tools/planner',
+    path: '/tools/planner',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedToolsMeetingRoute =
+  AuthenticatedToolsMeetingRouteImport.update({
+    id: '/tools/meeting',
+    path: '/tools/meeting',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedToolsEmailRoute = AuthenticatedToolsEmailRouteImport.update({
+  id: '/tools/email',
+  path: '/tools/email',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedToolsAssistantRoute =
+  AuthenticatedToolsAssistantRouteImport.update({
+    id: '/tools/assistant',
+    path: '/tools/assistant',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedHistoryIdRoute = AuthenticatedHistoryIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedHistoryRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/responsible-ai': typeof ResponsibleAiRoute
+  '/analytics': typeof AuthenticatedAnalyticsRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/history': typeof AuthenticatedHistoryRouteWithChildren
+  '/library': typeof AuthenticatedLibraryRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/api/chat': typeof ApiChatRoute
+  '/history/$id': typeof AuthenticatedHistoryIdRoute
+  '/tools/assistant': typeof AuthenticatedToolsAssistantRoute
+  '/tools/email': typeof AuthenticatedToolsEmailRoute
+  '/tools/meeting': typeof AuthenticatedToolsMeetingRoute
+  '/tools/planner': typeof AuthenticatedToolsPlannerRoute
+  '/tools/research': typeof AuthenticatedToolsResearchRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/responsible-ai': typeof ResponsibleAiRoute
+  '/analytics': typeof AuthenticatedAnalyticsRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/history': typeof AuthenticatedHistoryRouteWithChildren
+  '/library': typeof AuthenticatedLibraryRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/api/chat': typeof ApiChatRoute
+  '/history/$id': typeof AuthenticatedHistoryIdRoute
+  '/tools/assistant': typeof AuthenticatedToolsAssistantRoute
+  '/tools/email': typeof AuthenticatedToolsEmailRoute
+  '/tools/meeting': typeof AuthenticatedToolsMeetingRoute
+  '/tools/planner': typeof AuthenticatedToolsPlannerRoute
+  '/tools/research': typeof AuthenticatedToolsResearchRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/responsible-ai': typeof ResponsibleAiRoute
+  '/_authenticated/analytics': typeof AuthenticatedAnalyticsRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/history': typeof AuthenticatedHistoryRouteWithChildren
+  '/_authenticated/library': typeof AuthenticatedLibraryRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/api/chat': typeof ApiChatRoute
+  '/_authenticated/history/$id': typeof AuthenticatedHistoryIdRoute
+  '/_authenticated/tools/assistant': typeof AuthenticatedToolsAssistantRoute
+  '/_authenticated/tools/email': typeof AuthenticatedToolsEmailRoute
+  '/_authenticated/tools/meeting': typeof AuthenticatedToolsMeetingRoute
+  '/_authenticated/tools/planner': typeof AuthenticatedToolsPlannerRoute
+  '/_authenticated/tools/research': typeof AuthenticatedToolsResearchRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/reset-password' | '/responsible-ai' | '/api/chat'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/reset-password' | '/responsible-ai' | '/api/chat'
-  id:
-    | '__root__'
+  fullPaths:
     | '/'
     | '/auth'
     | '/reset-password'
     | '/responsible-ai'
+    | '/analytics'
+    | '/dashboard'
+    | '/history'
+    | '/library'
+    | '/settings'
     | '/api/chat'
+    | '/history/$id'
+    | '/tools/assistant'
+    | '/tools/email'
+    | '/tools/meeting'
+    | '/tools/planner'
+    | '/tools/research'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/responsible-ai'
+    | '/analytics'
+    | '/dashboard'
+    | '/history'
+    | '/library'
+    | '/settings'
+    | '/api/chat'
+    | '/history/$id'
+    | '/tools/assistant'
+    | '/tools/email'
+    | '/tools/meeting'
+    | '/tools/planner'
+    | '/tools/research'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/reset-password'
+    | '/responsible-ai'
+    | '/_authenticated/analytics'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/history'
+    | '/_authenticated/library'
+    | '/_authenticated/settings'
+    | '/api/chat'
+    | '/_authenticated/history/$id'
+    | '/_authenticated/tools/assistant'
+    | '/_authenticated/tools/email'
+    | '/_authenticated/tools/meeting'
+    | '/_authenticated/tools/planner'
+    | '/_authenticated/tools/research'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ResponsibleAiRoute: typeof ResponsibleAiRoute
@@ -108,6 +262,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -122,11 +283,130 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/library': {
+      id: '/_authenticated/library'
+      path: '/library'
+      fullPath: '/library'
+      preLoaderRoute: typeof AuthenticatedLibraryRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/history': {
+      id: '/_authenticated/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof AuthenticatedHistoryRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/analytics': {
+      id: '/_authenticated/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AuthenticatedAnalyticsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/tools/research': {
+      id: '/_authenticated/tools/research'
+      path: '/tools/research'
+      fullPath: '/tools/research'
+      preLoaderRoute: typeof AuthenticatedToolsResearchRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/tools/planner': {
+      id: '/_authenticated/tools/planner'
+      path: '/tools/planner'
+      fullPath: '/tools/planner'
+      preLoaderRoute: typeof AuthenticatedToolsPlannerRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/tools/meeting': {
+      id: '/_authenticated/tools/meeting'
+      path: '/tools/meeting'
+      fullPath: '/tools/meeting'
+      preLoaderRoute: typeof AuthenticatedToolsMeetingRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/tools/email': {
+      id: '/_authenticated/tools/email'
+      path: '/tools/email'
+      fullPath: '/tools/email'
+      preLoaderRoute: typeof AuthenticatedToolsEmailRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/tools/assistant': {
+      id: '/_authenticated/tools/assistant'
+      path: '/tools/assistant'
+      fullPath: '/tools/assistant'
+      preLoaderRoute: typeof AuthenticatedToolsAssistantRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/history/$id': {
+      id: '/_authenticated/history/$id'
+      path: '/$id'
+      fullPath: '/history/$id'
+      preLoaderRoute: typeof AuthenticatedHistoryIdRouteImport
+      parentRoute: typeof AuthenticatedHistoryRoute
+    }
   }
 }
 
+interface AuthenticatedHistoryRouteChildren {
+  AuthenticatedHistoryIdRoute: typeof AuthenticatedHistoryIdRoute
+}
+
+const AuthenticatedHistoryRouteChildren: AuthenticatedHistoryRouteChildren = {
+  AuthenticatedHistoryIdRoute: AuthenticatedHistoryIdRoute,
+}
+
+const AuthenticatedHistoryRouteWithChildren =
+  AuthenticatedHistoryRoute._addFileChildren(AuthenticatedHistoryRouteChildren)
+
+interface AuthenticatedRouteChildren {
+  AuthenticatedAnalyticsRoute: typeof AuthenticatedAnalyticsRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRouteWithChildren
+  AuthenticatedLibraryRoute: typeof AuthenticatedLibraryRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedToolsAssistantRoute: typeof AuthenticatedToolsAssistantRoute
+  AuthenticatedToolsEmailRoute: typeof AuthenticatedToolsEmailRoute
+  AuthenticatedToolsMeetingRoute: typeof AuthenticatedToolsMeetingRoute
+  AuthenticatedToolsPlannerRoute: typeof AuthenticatedToolsPlannerRoute
+  AuthenticatedToolsResearchRoute: typeof AuthenticatedToolsResearchRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAnalyticsRoute: AuthenticatedAnalyticsRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedHistoryRoute: AuthenticatedHistoryRouteWithChildren,
+  AuthenticatedLibraryRoute: AuthenticatedLibraryRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedToolsAssistantRoute: AuthenticatedToolsAssistantRoute,
+  AuthenticatedToolsEmailRoute: AuthenticatedToolsEmailRoute,
+  AuthenticatedToolsMeetingRoute: AuthenticatedToolsMeetingRoute,
+  AuthenticatedToolsPlannerRoute: AuthenticatedToolsPlannerRoute,
+  AuthenticatedToolsResearchRoute: AuthenticatedToolsResearchRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ResponsibleAiRoute: ResponsibleAiRoute,
