@@ -6,7 +6,7 @@ import { deleteGeneration } from "@/lib/local-store";
 import { toast } from "sonner";
 import { useState } from "react";
 
-export const Route = createFileRoute("/_authenticated/history/$id")({
+export const Route = createFileRoute("/_authenticated/history/")({
   head: () => ({ meta: [{ title: "Generation — TaskPilot" }] }),
   component: GenerationDetail,
 });
