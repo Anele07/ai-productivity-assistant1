@@ -108,14 +108,7 @@ function Landing() {
           </nav>
           <div className="flex items-center gap-2">
             <Link
-              to="/auth"
-              className="hidden rounded-full px-4 py-2 text-sm text-muted-foreground hover:text-foreground md:inline-flex"
-            >
-              Sign in
-            </Link>
-            <Link
-              to="/auth"
-              search={{ mode: "signup" }}
+              to="/dashboard"
               className="inline-flex items-center gap-1 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background transition-transform hover:-translate-y-px"
             >
               Start free <ArrowRight className="h-3.5 w-3.5" />
@@ -142,8 +135,7 @@ function Landing() {
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
-                to="/auth"
-                search={{ mode: "signup" }}
+                to="/dashboard"
                 className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-medium text-background elevation-2 transition-transform hover:-translate-y-px"
               >
                 Start free <ArrowRight className="h-4 w-4" />
@@ -393,8 +385,7 @@ function Landing() {
               Create your workspace, try one tool, and let TaskPilot start remembering.
             </p>
             <Link
-              to="/auth"
-              search={{ mode: "signup" }}
+              to="/dashboard"
               className="mt-8 inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-medium text-foreground hover:-translate-y-px"
             >
               Create your workspace <ArrowRight className="h-4 w-4" />
