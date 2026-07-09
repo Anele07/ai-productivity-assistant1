@@ -1,8 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Mail, Calendar, ListChecks, Search, Sparkles, Clock, Flame, TrendingUp, Trash2 } from "lucide-react";
-import { useGenerations } from "@/hooks/use-local-generations";
-import { getDashboardSummary, deleteGeneration } from "@/lib/local-store";
-import { toast } from "sonner";
+import { Mail, Calendar, ListChecks, Search, Sparkles, Clock, Flame, TrendingUp, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — TaskPilot" }] }),
@@ -18,26 +15,29 @@ const QUICK = [
 
 function Dashboard() {
   const nav = useNavigate();
-  useGenerations();
-  const s = getDashboardSummary();
+  type Summary = {
+    displayName?: string;
+    minutesThisWeek?: number;
+    hasAnyData?: boolean;
+    recent?: Array<{ id: string; title: string; tool: string; created_at: string }>;
+    streak?: number;
+    topTool?: string;
+  };
+  const s: Summary | undefined = undefined as Summary | undefined;
 
   const now = new Date();
   const hour = now.getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
-  const hrs = Math.floor(s.minutesThisWeek / 60);
-  const mins = s.minutesThisWeek % 60;
-
-  function remove(id: string) {
-    deleteGeneration(id);
-    toast.success("Deleted");
-  }
+  const minutes = s?.minutesThisWeek ?? 0;
+  const hrs = Math.floor(minutes / 60);
+  const mins = minutes % 60;
 
   return (
     <div className="mx-auto w-full max-w-6xl p-6 md:p-10">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-4xl leading-tight md:text-5xl">
-            {greeting}.
+            {greeting}, {s?.displayName ?? "there"}.
           </h1>
           <p className="mt-1 text-muted-foreground">
             {now.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })} · Here's your workday.
@@ -45,6 +45,7 @@ function Dashboard() {
         </div>
       </div>
 
+      {/* Quick actions */}
       <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {QUICK.map((a) => (
           <button
@@ -63,14 +64,16 @@ function Dashboard() {
         ))}
       </div>
 
+      {/* Row: focus + recent */}
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2 rounded-2xl border border-border bg-card p-6">
           <div className="text-xs uppercase tracking-widest text-muted-foreground">Suggested next</div>
-          {s.hasAnyData ? (
+          {s?.hasAnyData ? (
             <div className="mt-3 space-y-3">
-              {s.recent.slice(0, 3).map((g) => (
+              {(s.recent ?? []).slice(0, 3).map((g) => (
                 <Link key={g.id} to="/history/$id" params={{ id: g.id }} className="flex items-center justify-between rounded-xl border border-border bg-background p-3 hover:elevation-1">
                   <div className="truncate text-sm">Follow up on <span className="font-medium">{g.title}</span></div>
+                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
                 </Link>
               ))}
             </div>
@@ -84,34 +87,29 @@ function Dashboard() {
         </div>
 
         <div className="space-y-3">
-          <StatCard icon={Clock} label="Time saved this week" value={s.hasAnyData ? `${hrs}h ${mins}m` : "—"} hint="Draft one thing to start counting." />
-          <StatCard icon={Flame} label="Productivity streak" value={s.streak ? `${s.streak} ${s.streak === 1 ? "day" : "days"}` : "—"} hint="Show up tomorrow to keep it alive." />
-          <StatCard icon={TrendingUp} label="Most-used tool" value={s.topTool ? capitalize(s.topTool) : "—"} hint="This week." />
+          <StatCard icon={Clock} label="Time saved this week" value={s?.hasAnyData ? `${hrs}h ${mins}m` : "—"} hint="Draft one thing to start counting." />
+          <StatCard icon={Flame} label="Productivity streak" value={s?.streak ? `${s.streak} ${s.streak === 1 ? "day" : "days"}` : "—"} hint="Show up tomorrow to keep it alive." />
+          <StatCard icon={TrendingUp} label="Most-used tool" value={s?.topTool ? capitalize(s.topTool) : "—"} hint="This week." />
         </div>
       </div>
 
+      {/* Recent work */}
       <div className="mt-10">
         <div className="mb-3 flex items-center justify-between">
           <div className="text-sm font-medium">Recent work</div>
           <Link to="/history" className="text-xs text-muted-foreground hover:text-foreground">View all</Link>
         </div>
-        {s.recent.length > 0 ? (
+        {s?.recent && s.recent.length > 0 ? (
           <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {s.recent.map((g) => (
-              <div key={g.id} className="group relative rounded-2xl border border-border bg-card p-4 hover:elevation-1">
-                <Link to="/history/$id" params={{ id: g.id }}>
-                  <div className="text-xs uppercase tracking-widest text-muted-foreground">{g.tool}</div>
-                  <div className="mt-1 truncate font-medium pr-6">{g.title}</div>
-                  <div className="mt-2 text-xs text-muted-foreground">{new Date(g.created_at).toLocaleString()}</div>
-                </Link>
-                <button
-                  onClick={(e) => { e.preventDefault(); remove(g.id); }}
-                  className="absolute right-3 top-3 text-muted-foreground opacity-0 transition-opacity hover:text-destructive group-hover:opacity-100"
-                  aria-label="Delete"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
-              </div>
+              <Link key={g.id} to="/history/$id" params={{ id: g.id }}
+                className="rounded-2xl border border-border bg-card p-4 hover:elevation-1">
+                <div className="text-xs uppercase tracking-widest text-muted-foreground">{g.tool}</div>
+                <div className="mt-1 truncate font-medium">{g.title}</div>
+                <div className="mt-2 text-xs text-muted-foreground">
+                  {new Date(g.created_at).toLocaleString()}
+                </div>
+              </Link>
             ))}
           </div>
         ) : (
