@@ -1,21 +1,22 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 
 export const listTemplates = createServerFn({ method: "GET" })
-  .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    const { data, error } = await context.supabase
-      .from("prompt_templates")
-      .select("*")
-      .order("is_system", { ascending: false })
-      .order("created_at", { ascending: false });
-    if (error) throw new Error(error.message);
-    return data ?? [];
+  .handler(async () => {
+    return [] as Array<{
+      id: string;
+      name: string;
+      category: string;
+      tool: string;
+      body: string;
+      variables: unknown;
+      is_system: boolean;
+      favorited: boolean;
+      created_at: string;
+    }>;
   });
 
 export const saveTemplate = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
   .inputValidator((v: unknown) =>
     z
       .object({
@@ -26,53 +27,16 @@ export const saveTemplate = createServerFn({ method: "POST" })
       })
       .parse(v),
   )
-  .handler(async ({ data, context }) => {
-    const { data: ws } = await context.supabase
-      .from("workspaces").select("id").eq("owner_id", context.userId).limit(1).maybeSingle();
-    const { data: row, error } = await context.supabase
-      .from("prompt_templates")
-      .insert({
-        user_id: context.userId,
-        workspace_id: ws?.id,
-        name: data.name,
-        category: data.category,
-        tool: data.tool,
-        body: data.body,
-        is_system: false,
-      })
-      .select()
-      .single();
-    if (error) throw new Error(error.message);
-    return row;
-  });
+  .handler(async ({ data }) => ({
+    id: crypto.randomUUID(),
+    ...data,
+    is_system: false,
+    favorited: false,
+    created_at: new Date().toISOString(),
+  }));
 
 export const toggleTemplateFavorite = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
   .inputValidator((v: unknown) =>
     z.object({ id: z.string().uuid(), favorited: z.boolean() }).parse(v),
   )
-  .handler(async ({ data, context }) => {
-    // System templates: fav is stored per template row; since they're global,
-    // for simplicity we clone the template on first favorite by a user.
-    const { data: tpl } = await context.supabase
-      .from("prompt_templates").select("*").eq("id", data.id).single();
-    if (!tpl) throw new Error("Template not found");
-    if (tpl.is_system) {
-      const { data: ws } = await context.supabase
-        .from("workspaces").select("id").eq("owner_id", context.userId).limit(1).maybeSingle();
-      const { data: cloned, error } = await context.supabase
-        .from("prompt_templates").insert({
-          user_id: context.userId, workspace_id: ws?.id,
-          name: tpl.name, category: tpl.category, tool: tpl.tool,
-          body: tpl.body, variables: tpl.variables,
-          is_system: false, favorited: data.favorited,
-        }).select().single();
-      if (error) throw new Error(error.message);
-      return cloned;
-    }
-    const { data: row, error } = await context.supabase
-      .from("prompt_templates").update({ favorited: data.favorited })
-      .eq("id", data.id).eq("user_id", context.userId).select().single();
-    if (error) throw new Error(error.message);
-    return row;
-  });
+  .handler(async ({ data }) => ({ id: data.id, favorited: data.favorited }));
