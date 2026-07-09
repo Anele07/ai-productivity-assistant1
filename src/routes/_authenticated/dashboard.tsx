@@ -1,7 +1,4 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
-import { useQuery } from "@tanstack/react-query";
-import { getDashboardSummary } from "@/lib/generations.functions";
 import { Mail, Calendar, ListChecks, Search, Sparkles, Clock, Flame, TrendingUp, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -18,9 +15,15 @@ const QUICK = [
 
 function Dashboard() {
   const nav = useNavigate();
-  const summaryFn = useServerFn(getDashboardSummary);
-  const q = useQuery({ queryKey: ["dashboard"], queryFn: () => summaryFn({}) });
-  const s = q.data;
+  type Summary = {
+    displayName?: string;
+    minutesThisWeek?: number;
+    hasAnyData?: boolean;
+    recent?: Array<{ id: string; title: string; tool: string; created_at: string }>;
+    streak?: number;
+    topTool?: string;
+  };
+  const s: Summary | undefined = undefined as Summary | undefined;
 
   const now = new Date();
   const hour = now.getHours();
