@@ -58,7 +58,6 @@ export function AppSidebar() {
   const isActive = (url: string) => pathname === url || pathname.startsWith(url + "/");
 
   async function signOut() {
-    await supabase.auth.signOut();
     navigate({ to: "/" });
   }
 
