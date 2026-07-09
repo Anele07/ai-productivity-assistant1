@@ -81,7 +81,14 @@ export const listGenerations = createServerFn({ method: "GET" })
 // ---------- Get one generation ----------
 export const getGeneration = createServerFn({ method: "GET" })
   .inputValidator((v: unknown) => z.object({ id: z.string().uuid() }).parse(v))
-  .handler(async () => null);
+  .handler(async () => null as null | {
+    id: string;
+    tool: string;
+    title: string;
+    output_text: string | null;
+    created_at: string;
+    minutes_saved: number | null;
+  });
 
 // ---------- Delete ----------
 export const deleteGeneration = createServerFn({ method: "POST" })
