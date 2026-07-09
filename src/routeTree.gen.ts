@@ -24,6 +24,7 @@ import { Route as AuthenticatedToolsMeetingRouteImport } from './routes/_authent
 import { Route as AuthenticatedToolsEmailRouteImport } from './routes/_authenticated/tools.email'
 import { Route as AuthenticatedToolsAssistantRouteImport } from './routes/_authenticated/tools.assistant'
 import { Route as AuthenticatedHistoryIdRouteImport } from './routes/_authenticated/history.$id'
+import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history.'
 
 const ResponsibleAiRoute = ResponsibleAiRouteImport.update({
   id: '/responsible-ai',
@@ -103,6 +104,11 @@ const AuthenticatedHistoryIdRoute = AuthenticatedHistoryIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AuthenticatedHistoryRoute,
 } as any)
+const AuthenticatedHistoryRoute = AuthenticatedHistoryRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedHistoryRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -113,6 +119,7 @@ export interface FileRoutesByFullPath {
   '/library': typeof AuthenticatedLibraryRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/api/chat': typeof ApiChatRoute
+  '/history/': typeof AuthenticatedHistoryRoute
   '/history/$id': typeof AuthenticatedHistoryIdRoute
   '/tools/assistant': typeof AuthenticatedToolsAssistantRoute
   '/tools/email': typeof AuthenticatedToolsEmailRoute
@@ -125,10 +132,10 @@ export interface FileRoutesByTo {
   '/responsible-ai': typeof ResponsibleAiRoute
   '/analytics': typeof AuthenticatedAnalyticsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/history': typeof AuthenticatedHistoryRouteWithChildren
   '/library': typeof AuthenticatedLibraryRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/api/chat': typeof ApiChatRoute
+  '/history': typeof AuthenticatedHistoryRoute
   '/history/$id': typeof AuthenticatedHistoryIdRoute
   '/tools/assistant': typeof AuthenticatedToolsAssistantRoute
   '/tools/email': typeof AuthenticatedToolsEmailRoute
@@ -147,6 +154,7 @@ export interface FileRoutesById {
   '/_authenticated/library': typeof AuthenticatedLibraryRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/api/chat': typeof ApiChatRoute
+  '/_authenticated/history/': typeof AuthenticatedHistoryRoute
   '/_authenticated/history/$id': typeof AuthenticatedHistoryIdRoute
   '/_authenticated/tools/assistant': typeof AuthenticatedToolsAssistantRoute
   '/_authenticated/tools/email': typeof AuthenticatedToolsEmailRoute
@@ -165,6 +173,7 @@ export interface FileRouteTypes {
     | '/library'
     | '/settings'
     | '/api/chat'
+    | '/history/'
     | '/history/$id'
     | '/tools/assistant'
     | '/tools/email'
@@ -177,10 +186,10 @@ export interface FileRouteTypes {
     | '/responsible-ai'
     | '/analytics'
     | '/dashboard'
-    | '/history'
     | '/library'
     | '/settings'
     | '/api/chat'
+    | '/history'
     | '/history/$id'
     | '/tools/assistant'
     | '/tools/email'
@@ -198,6 +207,7 @@ export interface FileRouteTypes {
     | '/_authenticated/library'
     | '/_authenticated/settings'
     | '/api/chat'
+    | '/_authenticated/history/'
     | '/_authenticated/history/$id'
     | '/_authenticated/tools/assistant'
     | '/_authenticated/tools/email'
@@ -320,14 +330,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHistoryIdRouteImport
       parentRoute: typeof AuthenticatedHistoryRoute
     }
+    '/_authenticated/history/': {
+      id: '/_authenticated/history/'
+      path: '/'
+      fullPath: '/history/'
+      preLoaderRoute: typeof AuthenticatedHistoryRouteImport
+      parentRoute: typeof AuthenticatedHistoryRoute
+    }
   }
 }
 
 interface AuthenticatedHistoryRouteChildren {
+  AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
   AuthenticatedHistoryIdRoute: typeof AuthenticatedHistoryIdRoute
 }
 
 const AuthenticatedHistoryRouteChildren: AuthenticatedHistoryRouteChildren = {
+  AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,
   AuthenticatedHistoryIdRoute: AuthenticatedHistoryIdRoute,
 }
 
