@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Mail, Calendar, ListChecks, Search, Sparkles, Clock, Flame, TrendingUp } from "lucide-react";
+import { Mail, Calendar, ListChecks, Search, Sparkles, Clock, Flame, TrendingUp, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — TaskPilot" }] }),
@@ -15,14 +15,15 @@ const QUICK = [
 
 function Dashboard() {
   const nav = useNavigate();
-  const s: {
+  type Summary = {
     displayName?: string;
     minutesThisWeek?: number;
     hasAnyData?: boolean;
     recent?: Array<{ id: string; title: string; tool: string; created_at: string }>;
     streak?: number;
     topTool?: string;
-  } | undefined = undefined;
+  };
+  const s: Summary | undefined = undefined as Summary | undefined;
 
   const now = new Date();
   const hour = now.getHours();
