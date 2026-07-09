@@ -88,10 +88,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "One calm, AI-assisted workspace for email, meetings, planning, and research.",
+          "TaskPilot is the calm AI workspace for professionals. Draft email, summarize meetings, plan the week, and research anything — all in one place that remembers.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "TaskPilot — Your workday, on autopilot" },
+      { name: "twitter:description", content: "TaskPilot is the calm AI workspace for professionals. Draft email, summarize meetings, plan the week, and research anything — all in one place that remembers." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/oHfGJD1Rr3X5UYHWaA6KgIMoHT03/social-images/social-1783584793693-ChatGPT_Image_Jul_9,_2026,_10_11_45_AM.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/oHfGJD1Rr3X5UYHWaA6KgIMoHT03/social-images/social-1783584793693-ChatGPT_Image_Jul_9,_2026,_10_11_45_AM.webp" },
     ],
     links: [
       {
