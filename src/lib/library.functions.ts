@@ -9,7 +9,7 @@ export const listTemplates = createServerFn({ method: "GET" })
       category: string;
       tool: string;
       body: string;
-      variables: unknown;
+      variables: Record<string, string> | null;
       is_system: boolean;
       favorited: boolean;
       created_at: string;
