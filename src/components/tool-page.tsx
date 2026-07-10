@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -116,8 +117,8 @@ export function ToolPage({ tool }: { tool: ToolId }) {
           </div>
           <div className="mt-4 min-h-[280px]">
             {output ? (
-              <article className="prose prose-sm max-w-none dark:prose-invert prose-headings:font-display">
-                <ReactMarkdown>{output}</ReactMarkdown>
+              <article className="prose prose-sm max-w-none dark:prose-invert prose-headings:font-display prose-table:my-4 prose-th:text-left prose-th:font-medium prose-td:align-top">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{output}</ReactMarkdown>
               </article>
             ) : (
               <div className="grid h-full min-h-[240px] place-items-center text-center text-sm text-muted-foreground">
