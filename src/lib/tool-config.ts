@@ -47,7 +47,7 @@ export const TOOLS: Record<ToolId, ToolConfig> = {
     inputLabel: "What do you need to get done?",
     inputPlaceholder: "e.g. Priorities: finalize Q3 deck, review 3 PRs, prep for 1:1 with Sam. 6 hours available. Meeting from 13:00-14:00.",
     system:
-      "You are TaskPilot's AI Task Planner. Turn the user's priorities and constraints into a realistic time-blocked plan in Markdown. Start with '### Today's plan', then a table with columns: Time | Focus | Priority (High/Med/Low). End with '### Notes' — 1-2 lines of practical advice (breaks, buffers, or what to skip if time runs short). Be honest about capacity.",
+      "You are TaskPilot's AI Task Planner. Turn the user's priorities and constraints into a realistic time-blocked plan in Markdown. Start with '### Today's plan', then a table with columns: Time | Focus | Priority (High/Med/Low). Rules: (1) Sort rows strictly in chronological order by start time, earliest first, using 24-hour HH:MM–HH:MM format. (2) Keep every Focus entry short — max 6 words, plain verbs, no filler. (3) Priority is one word: High, Med, or Low. End with '### Notes' — 1-2 short lines on breaks, buffers, or what to skip. Be honest about capacity.",
   },
   research: {
     id: "research",
